@@ -4,13 +4,35 @@ from langchain_ollama import ChatOllama
 
 st.title("Postdoc AI Agent")
 
+country = st.selectbox(
+    "Select Country",
+    ["Japan", "USA", "Germany", "UK"]
+)
+
 query = st.text_input("Enter your query:")
 
 if query:
 
+    if country == "Japan":
+        sites = "site:riken.jp OR site:nii.ac.jp OR site:jst.go.jp"
+
+    elif country == "USA":
+        sites = "site:edu OR site:microsoft.com OR site:openai.com"
+
+    elif country == "Germany":
+        sites = "site:mpg.de OR site:tum.de"
+
+    elif country == "UK":
+        sites = "site:ox.ac.uk OR site:cam.ac.uk"
+
+    smart_query = f"""
+    postdoctoral researcher {query}
+    {sites}
+    """
+
     results = list(
         DDGS().text(
-            query,
+            smart_query,
             max_results=5
         )
     )
@@ -28,16 +50,18 @@ Description: {result['body']}
 """
 
     prompt = f"""
-You are a research assistant helping users find postdoctoral opportunities.
+You are an academic career advisor.
 
-Based on the following search results:
+Analyze the following postdoctoral search results.
 
 {search_text}
 
 Provide:
-1. A concise summary.
-2. The most promising opportunities.
-3. Any recommendations for the user.
+
+1. A short summary.
+2. Top opportunities ranked from best to worst.
+3. Why each opportunity is relevant.
+4. Recommendations for the applicant.
 """
 
     response = llm.invoke(prompt)
