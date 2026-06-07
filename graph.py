@@ -8,6 +8,7 @@ from langgraph.graph import StateGraph, END
 class State(TypedDict):
     query: str
     search_result: str
+    results: list
     summary: str
 
 
@@ -31,7 +32,8 @@ Description: {result['body']}
 """
 
     return {
-        "search_result": search_text
+        "search_result": search_text,
+        "results": results
     }
 
 

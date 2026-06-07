@@ -38,5 +38,10 @@ if query:
     st.subheader("AI Summary")
     st.write(response["summary"])
 
-    st.subheader("Raw Search Results")
-    st.text(response["search_result"])
+    st.subheader("Search Results")
+
+    for i, result in enumerate(response["results"], start=1):
+        st.write(f"### {i}. {result['title']}")
+        st.write(result["href"])
+        st.write(result["body"])
+        st.write("---")
