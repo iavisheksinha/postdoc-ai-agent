@@ -1,6 +1,6 @@
 # Postdoc AI Agent
 
-An AI-powered research assistant for discovering postdoctoral opportunities using intelligent academic web search, local LLMs, and LangGraph workflows.
+An AI-powered research assistant for discovering postdoctoral opportunities using intelligent academic web search, local LLMs, and LangGraph-based workflows.
 
 ## Features
 
@@ -8,9 +8,9 @@ An AI-powered research assistant for discovering postdoctoral opportunities usin
 * Interactive Streamlit web interface
 * Country-aware academic opportunity search
 * AI-powered opportunity analysis and summarization
-* Ranked postdoctoral opportunity recommendations
 * Academic web search using DDGS
 * LangGraph workflow orchestration
+* Structured search result display
 * Fully local AI processing (except web search)
 
 ## Technology Stack
@@ -22,11 +22,11 @@ An AI-powered research assistant for discovering postdoctoral opportunities usin
 * DDGS
 * LangChain
 * LangGraph
-* Git
+* Git & GitHub
 
 ## Current Status
 
-### Version 0.4
+### Version 0.5
 
 Implemented:
 
@@ -37,9 +37,12 @@ Implemented:
   * USA
   * Germany
   * UK
-* LangGraph workflow integration
+* LangGraph integration
+* Search Node
+* Decision Node
+* Summary Node
 * AI-generated summaries
-* Opportunity ranking and recommendations
+* Structured search result display
 * GitHub version control
 * Streamlit-based user interface
 
@@ -49,9 +52,9 @@ User Query
 → Country Selection
 → Smart Academic Search (DDGS)
 → LangGraph Search Node
+→ LangGraph Decision Node
 → LangGraph Summary Node
 → AI Analysis (Llama 3)
-→ Ranked Opportunities
 → Streamlit Display
 
 ## Project Structure
@@ -61,25 +64,41 @@ postdoc_ai_agent/
 │
 ├── app.py                # Streamlit frontend
 ├── graph.py              # LangGraph workflow
+├── langgraph_test.py     # LangGraph experiments
 ├── test_search.py        # Search experiments
 ├── README.md
 └── .gitignore
 ```
 
+## Current Architecture
+
+```text
+User Query
+     ↓
+Search Node
+     ↓
+Decision Node
+     ↓
+Summary Node
+     ↓
+Display Results
+```
+
 ## Planned Features
 
-### Version 0.5
-
-* Excel export of opportunities
-* Clickable opportunity links
-* Better university and institute filtering
-* Opportunity scoring system
-
 ### Version 0.6
+
+* Dynamic routing in LangGraph
+* Search refinement node
+* Opportunity scoring and ranking
+* Excel export
+
+### Version 0.7
 
 * Professor matching
 * Research-interest matching
 * Automated opportunity tracking
+* Saved searches
 
 ### Version 1.0
 
@@ -91,7 +110,17 @@ postdoc_ai_agent/
 
 ## Motivation
 
-Finding suitable postdoctoral opportunities often requires searching across multiple university, government, and research institute websites. This project aims to automate discovery, filtering, ranking, and analysis of opportunities using modern AI tools and agentic workflows.
+Finding suitable postdoctoral opportunities often requires searching across multiple university, government, and research institute websites. This project aims to automate discovery, filtering, ranking, and analysis of opportunities using modern AI techniques and agentic workflows.
+
+## Learning Goals
+
+This project is being developed as a practical exploration of:
+
+* Local LLM deployment with Ollama
+* Agentic AI systems
+* LangGraph workflows
+* Research opportunity discovery
+* AI-assisted academic career support
 
 ## Author
 

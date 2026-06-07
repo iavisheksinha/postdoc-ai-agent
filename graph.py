@@ -10,9 +10,12 @@ class State(TypedDict):
     search_result: str
     results: list
     summary: str
+    decision: str
 
 
 def search_node(state):
+
+    print("Searching...")
 
     results = list(
         DDGS().text(
@@ -37,7 +40,23 @@ Description: {result['body']}
     }
 
 
+def decision_node(state):
+
+    print("Making Decision...")
+
+    if len(state["results"]) < 3:
+        return {
+            "decision": "search_again"
+        }
+
+    return {
+        "decision": "summarize"
+    }
+
+
 def summary_node(state):
+
+    print("Summarizing...")
 
     llm = ChatOllama(model="llama3")
 
@@ -61,14 +80,30 @@ Provide:
     }
 
 
+def route_decision(state):
+
+    return state["decision"]
+
+
 graph = StateGraph(State)
 
 graph.add_node("search", search_node)
+graph.add_node("decision", decision_node)
 graph.add_node("summary", summary_node)
 
 graph.set_entry_point("search")
 
-graph.add_edge("search", "summary")
+graph.add_edge("search", "decision")
+
+graph.add_conditional_edges(
+    "decision",
+    route_decision,
+    {
+        "summarize": "summary",
+        "search_again": "summary"
+    }
+)
+
 graph.add_edge("summary", END)
 
 app = graph.compile()
