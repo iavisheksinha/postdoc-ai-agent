@@ -1,6 +1,5 @@
 import streamlit as st
-from ddgs import DDGS
-from langchain_ollama import ChatOllama
+from graph import app
 
 st.title("Postdoc AI Agent")
 
@@ -30,49 +29,14 @@ if query:
     {sites}
     """
 
-    results = list(
-        DDGS().text(
-            smart_query,
-            max_results=5
-        )
+    response = app.invoke(
+        {
+            "query": smart_query
+        }
     )
 
-    llm = ChatOllama(model="llama3")
-
-    search_text = ""
-
-    for result in results:
-        search_text += f"""
-Title: {result['title']}
-URL: {result['href']}
-Description: {result['body']}
-
-"""
-
-    prompt = f"""
-You are an academic career advisor.
-
-Analyze the following postdoctoral search results.
-
-{search_text}
-
-Provide:
-
-1. A short summary.
-2. Top opportunities ranked from best to worst.
-3. Why each opportunity is relevant.
-4. Recommendations for the applicant.
-"""
-
-    response = llm.invoke(prompt)
-
     st.subheader("AI Summary")
-    st.write(response.content)
+    st.write(response["summary"])
 
-    st.subheader("Search Results")
-
-    for i, result in enumerate(results, start=1):
-        st.write(f"### {i}. {result['title']}")
-        st.write(result["href"])
-        st.write(result["body"])
-        st.write("---")
+    st.subheader("Raw Search Results")
+    st.text(response["search_result"])
